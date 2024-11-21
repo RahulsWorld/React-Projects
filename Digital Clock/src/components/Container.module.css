@@ -1,0 +1,11 @@
+.Container{ 
+    border: 5px solid black;
+    margin: 15px;
+    width: 50%;
+    border-radius: 5px;
+    min-width: 400px;
+    background-color: coral;
+    align-items: center;
+    
+
+}
