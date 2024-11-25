@@ -2,11 +2,11 @@ function ClockTime() {
   let time = new Date();
 
   return (
-    <p>
+    <form>
       This is the current time:{time.toLocaleDateString()} -{" "}
       {time.toLocaleTimeString()}
-      
-    </p>
+      <button>Refresh</button>
+    </form>
   );
 }
 export default ClockTime;
