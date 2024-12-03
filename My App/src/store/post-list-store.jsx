@@ -2,8 +2,9 @@ import { createContext, useReducer } from "react";
 
 export const PostList = createContext({
   postList: [],
-  addPost: () => {},
+  addInitialPosts: () => {},
   deletePost: () => {},
+  addPost: () => {},
 });
 
 const PostListReducer = (currPostList, action) => {
@@ -14,15 +15,14 @@ const PostListReducer = (currPostList, action) => {
     );
   } else if (action.type === "ADD_POST") {
     newPostList = [action.payLoad, ...currPostList];
+  } else if (action.type === "ADD_INITIAL_POSTS") {
+    newPostList = action.payLoad.posts;
   }
-
   return newPostList;
 };
+
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    PostListReducer,
-    DEFAULT_LISt
-  );
+  const [postList, dispatchPostList] = useReducer(PostListReducer, []);
 
   const addPost = (userID, postTitle, postBody, Reaction, tags) => {
     dispatchPostList({
@@ -37,6 +37,14 @@ const PostListProvider = ({ children }) => {
       },
     });
   };
+  const addInitialPosts = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payLoad: {
+        posts,
+      },
+    });
+  };
 
   const deletePost = (postId) => {
     dispatchPostList({
@@ -48,28 +56,13 @@ const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostList.Provider value={{ postList, addPost, deletePost }}>
+    <PostList.Provider
+      value={{ postList, addInitialPosts, deletePost, addPost }}
+    >
       {children}
     </PostList.Provider>
   );
 };
 
-const DEFAULT_LISt = [
-  {
-    id: "1",
-    title: "Mumbai Trip",
-    body: "Habibi Come to DUbai ",
-    Reaction: 34,
-    userID: "",
-    tags: ["Mumbai", "Taj", "Beach"],
-  },
-  {
-    id: "2",
-    title: "Pass BTech",
-    body: "Its a beautiful Journey of 4 years ",
-    Reaction: 255,
-    userID: "",
-    tags: ["College", "Bunks", "Canteen"],
-  },
-];
 export default PostListProvider;
+
